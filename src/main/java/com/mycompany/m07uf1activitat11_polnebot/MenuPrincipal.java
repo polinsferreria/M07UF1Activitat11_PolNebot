@@ -94,15 +94,17 @@ public class MenuPrincipal extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String username = usernameField.getText();
                 char[] password = passwordField.getPassword();
-                Usuarilogin =new Usuaris();
+
+                Usuarilogin = new Usuaris();
                 Usuarilogin.setNomUsuari(username);
                 Usuarilogin.setPassword(new String(password));
+
                 System.out.println("Contraseña ingresada: " + new String(password));
                 // Realizar la autenticación con el servicio de biblioteca
                 boolean isAuthenticated = bibliotecaService.authenticateUser(username, new String(password));
-                
+
                 if (isAuthenticated) {
-                    
+
                     // Mostrar el menú principal después de iniciar sesión
                     MostrarMenuSegunPermisos();
 
@@ -444,7 +446,7 @@ public class MenuPrincipal extends JFrame {
 
         // Establecer la barra de menú en el JFrame
         setJMenuBar(menuBar);
-        
+
         menuBar.setVisible(true);
     }
 
@@ -536,98 +538,100 @@ public class MenuPrincipal extends JFrame {
             //</editor-fold>
         }
     }
-    
+
     private void ConsultaLlibres(String[] columnNames, Object[][] data, String tipoConsulta) {
-    JDialog dialog = new JDialog(MenuPrincipal.this, tipoConsulta, true);
-    dialog.setSize(700, 400);
+        JDialog dialog = new JDialog(MenuPrincipal.this, tipoConsulta, true);
+        dialog.setSize(700, 400);
 
-    JTable table = new JTable(data, columnNames);
-    JScrollPane scrollPane = new JScrollPane(table);
-    dialog.getContentPane().add(scrollPane, BorderLayout.CENTER);
+        JTable table = new JTable(data, columnNames);
+        JScrollPane scrollPane = new JScrollPane(table);
+        dialog.getContentPane().add(scrollPane, BorderLayout.CENTER);
 
-    // Botón de Cancelar/Salir
-    JButton cancelButton = new JButton("Cancelar");
-    cancelButton.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            dialog.dispose(); // Cerrar el diálogo al hacer clic en Cancelar
-        }
-    });
-
-    if (this.tipoConsulta == 5) { // dar de baja Libros
-        table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+        // Botón de Cancelar/Salir
+        JButton cancelButton = new JButton("Cancelar");
+        cancelButton.addActionListener(new ActionListener() {
             @Override
-            public void valueChanged(ListSelectionEvent e) {
-                if (!e.getValueIsAdjusting()) {
-                    int selectedRow = table.getSelectedRow();
-                    if (selectedRow != -1) {
-                        int idLlibre = (int) table.getValueAt(selectedRow, 0);
+            public void actionPerformed(ActionEvent e) {
+                dialog.dispose(); // Cerrar el diálogo al hacer clic en Cancelar
+            }
+        });
 
-                        // Preguntar al usuario si desea eliminar el Libro seleccionado
-                        int option = JOptionPane.showConfirmDialog(dialog, "¿Desea eliminar este libro?", "Eliminar libro", JOptionPane.YES_NO_OPTION);
+        if (this.tipoConsulta == 5) { // dar de baja Libros
+            table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+                @Override
+                public void valueChanged(ListSelectionEvent e) {
+                    if (!e.getValueIsAdjusting()) {
+                        int selectedRow = table.getSelectedRow();
+                        if (selectedRow != -1) {
+                            int idLlibre = (int) table.getValueAt(selectedRow, 0);
+                            String nomUsuari = (String) table.getValueAt(selectedRow, 1);//pol haz q devulva la id y la guardas arriba ------------------------------------------------------------------
+                            //comprobar q no sea el usuario q se esta usando :D -------------------------------------------------------------------------------
 
-                        if (option == JOptionPane.YES_OPTION) {
-                            // Lógica para eliminar el Libro utilizando el servicio de la biblioteca
-                            boolean eliminacionExitosa = bibliotecaService.baixaLlibre(idLlibre);
-                            if (eliminacionExitosa) {
-                                JOptionPane.showMessageDialog(dialog, "Libro eliminado con éxito", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                            // Preguntar al usuario si desea eliminar el Libro seleccionado
+                            int option = JOptionPane.showConfirmDialog(dialog, "¿Desea eliminar este libro?", "Eliminar libro", JOptionPane.YES_NO_OPTION);
 
-                                // refrescar la tabla
-                                dialog.setVisible(false);
-                                dialog.dispose();
-                                cargarConsulta(tipoConsulta);
+                            if (option == JOptionPane.YES_OPTION) {
+                                // Lógica para eliminar el Libro utilizando el servicio de la biblioteca
+                                boolean eliminacionExitosa = bibliotecaService.baixaLlibre(idLlibre);
+                                if (eliminacionExitosa) {
+                                    JOptionPane.showMessageDialog(dialog, "Libro eliminado con éxito", "Éxito", JOptionPane.INFORMATION_MESSAGE);
 
-                            } else {
-                                JOptionPane.showMessageDialog(dialog, "Error al eliminar el libro", "Error", JOptionPane.ERROR_MESSAGE);
+                                    // refrescar la tabla
+                                    dialog.setVisible(false);
+                                    dialog.dispose();
+                                    cargarConsulta(tipoConsulta);
+
+                                } else {
+                                    JOptionPane.showMessageDialog(dialog, "Error al eliminar el libro", "Error", JOptionPane.ERROR_MESSAGE);
+                                }
                             }
                         }
                     }
                 }
-            }
-        });
-    } else if (this.tipoConsulta == 6) { // modificar Libros
-        table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                if (!e.getValueIsAdjusting()) {
-                    int selectedRow = table.getSelectedRow();
-                    if (selectedRow != -1) {
-                        int idLlibre = (int) table.getValueAt(selectedRow, 0);
-                        int idCodi = (int) table.getValueAt(selectedRow, 1);
-                        int idTipusFons = (int) table.getValueAt(selectedRow, 2);
-                        String titol = (String) table.getValueAt(selectedRow, 3);
-                        String autor = (String) table.getValueAt(selectedRow, 4);
-                        String isbn = (String) table.getValueAt(selectedRow, 5);
-                        int quantitatDisponible = (int) table.getValueAt(selectedRow, 6);
-                        int idPrestatge = (int) table.getValueAt(selectedRow, 7);
-                        int idBalda = (int) table.getValueAt(selectedRow, 8);
-                        // Mostrar un formulario de modificación
-                        FormulariLlibres modificarDialog = new FormulariLlibres(MenuPrincipal.this, idLlibre, idCodi, idTipusFons, titol, autor, isbn, quantitatDisponible, idPrestatge, idBalda, bibliotecaService);
+            });
+        } else if (this.tipoConsulta == 6) { // modificar Libros
+            table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+                @Override
+                public void valueChanged(ListSelectionEvent e) {
+                    if (!e.getValueIsAdjusting()) {
+                        int selectedRow = table.getSelectedRow();
+                        if (selectedRow != -1) {
+                            int idLlibre = (int) table.getValueAt(selectedRow, 0);
+                            int idCodi = (int) table.getValueAt(selectedRow, 1);
+                            int idTipusFons = (int) table.getValueAt(selectedRow, 2);
+                            String titol = (String) table.getValueAt(selectedRow, 3);
+                            String autor = (String) table.getValueAt(selectedRow, 4);
+                            String isbn = (String) table.getValueAt(selectedRow, 5);
+                            int quantitatDisponible = (int) table.getValueAt(selectedRow, 6);
+                            int idPrestatge = (int) table.getValueAt(selectedRow, 7);
+                            int idBalda = (int) table.getValueAt(selectedRow, 8);
+                            // Mostrar un formulario de modificación
+                            FormulariLlibres modificarDialog = new FormulariLlibres(MenuPrincipal.this, idLlibre, idCodi, idTipusFons, titol, autor, isbn, quantitatDisponible, idPrestatge, idBalda, bibliotecaService);
 
-                        // refrescar la tabla
-                        dialog.setVisible(false);
-                        dialog.dispose();
-                        cargarConsulta(tipoConsulta);
+                            // refrescar la tabla
+                            dialog.setVisible(false);
+                            dialog.dispose();
+                            cargarConsulta(tipoConsulta);
+                        }
                     }
                 }
-            }
-        });
+            });
 
-    } else if (this.tipoConsulta == 4) { // consulta Libros
-        cancelButton.setText("<- Atrás");
+        } else if (this.tipoConsulta == 4) { // consulta Libros
+            cancelButton.setText("<- Atrás");
+        }
+
+        // Agregar el botón de Cancelar/Salir al panel del diálogo
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(cancelButton);
+        dialog.getContentPane().add(buttonPanel, BorderLayout.SOUTH);
+        // Establecer la operación al cerrar para que se cierre correctamente
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+
+        dialog.setVisible(true);
     }
 
-    // Agregar el botón de Cancelar/Salir al panel del diálogo
-    JPanel buttonPanel = new JPanel();
-    buttonPanel.add(cancelButton);
-    dialog.getContentPane().add(buttonPanel, BorderLayout.SOUTH);
-    // Establecer la operación al cerrar para que se cierre correctamente
-    dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-
-    dialog.setVisible(true);
-}
-
-
+    
     private void ConsultaBaldes(String[] columnNames, Object[][] data, String tipoConsulta) {
         JDialog dialog = new JDialog(MenuPrincipal.this, tipoConsulta, true);
         dialog.setSize(400, 300);
@@ -907,25 +911,30 @@ public class MenuPrincipal extends JFrame {
                         int selectedRow = table.getSelectedRow();
                         if (selectedRow != -1) {
                             int idUsuari = (int) table.getValueAt(selectedRow, 0);
-                            String nomusuari; 
-                            Usuarilogin.getNomUsuari();
-                            // Preguntar al usuario si desea eliminar el usuario seleccionado
-                            int option = JOptionPane.showConfirmDialog(dialog, "¿Desea eliminar este usuario?", "Eliminar Usuario", JOptionPane.YES_NO_OPTION);
+                            String nomusuari = (String) table.getValueAt(selectedRow, 0);
 
-                            if (option == JOptionPane.YES_OPTION) {
-                                // Lógica para eliminar el usuario utilizando el servicio de la biblioteca
-                                boolean eliminacionExitosa = bibliotecaService.baixaUsuari(idUsuari);
-                                if (eliminacionExitosa) {
-                                    JOptionPane.showMessageDialog(dialog, "Usuario eliminado con éxito", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                            if (!nomusuari.equals(Usuarilogin.getNomUsuari())) {
+                                // Preguntar al usuario si desea eliminar el usuario seleccionado
+                                int option = JOptionPane.showConfirmDialog(dialog, "¿Desea eliminar este usuario?", "Eliminar Usuario", JOptionPane.YES_NO_OPTION);
 
-                                    //refrescar la tabla 
-                                    dialog.setVisible(false);
-                                    cargarConsulta(tipoConsulta);
+                                if (option == JOptionPane.YES_OPTION) {
+                                    // Lógica para eliminar el usuario utilizando el servicio de la biblioteca
+                                    boolean eliminacionExitosa = bibliotecaService.baixaUsuari(idUsuari);
+                                    if (eliminacionExitosa) {
+                                        JOptionPane.showMessageDialog(dialog, "Usuario eliminado con éxito", "Éxito", JOptionPane.INFORMATION_MESSAGE);
 
-                                } else {
-                                    JOptionPane.showMessageDialog(dialog, "Error al eliminar el usuario", "Error", JOptionPane.ERROR_MESSAGE);
+                                        //refrescar la tabla 
+                                        dialog.setVisible(false);
+                                        cargarConsulta(tipoConsulta);
+
+                                    } else {
+                                        JOptionPane.showMessageDialog(dialog, "Error al eliminar el usuario", "Error", JOptionPane.ERROR_MESSAGE);
+                                    }
                                 }
+                            } else {
+                                JOptionPane.showMessageDialog(dialog, "Error, no puedes eliminar un mismo usuario.", "Error", JOptionPane.ERROR_MESSAGE);
                             }
+
                         }
                     }
                 }
@@ -972,7 +981,7 @@ public class MenuPrincipal extends JFrame {
         //JOptionPane.showMessageDialog(this, "Bienvenido al Menú Principal", "Éxito", JOptionPane.INFORMATION_MESSAGE);
         menuBar.remove(usuarisMenu);
         menuBar.remove(menuAjuda);
-        
+
         menuBar.add(menuPrincipal);
         menuBar.add(usuarisMenu);
         menuBar.add(llibresMenu);

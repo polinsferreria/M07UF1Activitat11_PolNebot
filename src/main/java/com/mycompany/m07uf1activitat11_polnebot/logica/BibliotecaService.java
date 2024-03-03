@@ -518,7 +518,7 @@ import javax.persistence.*;
 
         try {
             Usuaris user = query.getSingleResult();
-
+            
             // Verificar la contraseña (la implementación real dependerá de cómo estén almacenadas las contraseñas)
             boolean isAuthenticated = checkPassword(password, user.getPassword());
 

@@ -4,6 +4,7 @@
  */
 package com.mycompany.m07uf1activitat11_polnebot;
 
+import com.mycompany.m07uf1activitat11_polnebot.dades.Usuaris;
 import com.mycompany.m07uf1activitat11_polnebot.logica.BibliotecaService;
 import javax.swing.*;
 import java.awt.*;
@@ -43,6 +44,19 @@ public class FormulariUsuari extends JDialog {
 
         formulariUsuari();
 
+    }
+
+    private boolean nomExiste(String nomUser) {
+        boolean validar = false;
+        java.util.List<Usuaris> usuarios = bibliotecaService.obtenirTotsElsUsuaris();
+        for (Usuaris user : usuarios) {
+            if (nomUser.equals(user.getNomUsuari())) {
+                validar = true;
+                break;
+            }
+        }
+
+        return validar;
     }
 
     private void formulariUsuari() {
@@ -93,39 +107,45 @@ public class FormulariUsuari extends JDialog {
         confirmButton = new JButton("Confirmar");
 
         inputPanel.add(confirmButton, gbc);
-        
+
         if (nombreUsuario != null && tipoUsuario != -1) {
             modificarUsuari();
-        }else{
+        } else {
             AltaUsuari();
         }
-        
+
         add(inputPanel, BorderLayout.CENTER);
         setVisible(true);
     }
-    private void AltaUsuari(){
+
+    private void AltaUsuari() {
         titleLabel.setText("Introduir dades del nou usuari");
         confirmButton.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        // Obtener la información del nuevo usuario
-                        String nuevoUsername = usernameField.getText();
-                        char[] nuevoPassword = passwordField.getPassword();
-                        int tipoUsuario = (int) tipusUsuari.getValue();
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Obtener la información del nuevo usuario
+                String nuevoUsername = usernameField.getText();
+                char[] nuevoPassword = passwordField.getPassword();
+                int tipoUsuario = (int) tipusUsuari.getValue();
 
-                        // Lógica para dar de alta al usuario utilizando el servicio de la biblioteca
-                        boolean altaExitosa = bibliotecaService.altaUsuari(nuevoUsername, new String(nuevoPassword), tipoUsuario);
+                boolean altaExitosa = false;
+                if (!nomExiste(nuevoUsername)) {
+                    // Lógica para dar de alta al usuario utilizando el servicio de la biblioteca
+                    altaExitosa = bibliotecaService.altaUsuari(nuevoUsername, new String(nuevoPassword), tipoUsuario);
+                } else {
+                    JOptionPane.showMessageDialog(FormulariUsuari.this, "Error al donar d'alta. El nom de l'usuari ja existeix", "Error", JOptionPane.ERROR_MESSAGE);
+                }
 
-                        if (altaExitosa) {
-                            JOptionPane.showMessageDialog(FormulariUsuari.this, "Usuari donat d'alta amb èxit", "Èxit", JOptionPane.INFORMATION_MESSAGE);
-                            dispose();
-                        } else {
-                            JOptionPane.showMessageDialog(FormulariUsuari.this, "Error al donar d'alta l'usuari", "Error", JOptionPane.ERROR_MESSAGE);
-                        }
-                    }
-                });
+                if (altaExitosa) {
+                    JOptionPane.showMessageDialog(FormulariUsuari.this, "Usuari donat d'alta amb èxit", "Èxit", JOptionPane.INFORMATION_MESSAGE);
+                    dispose();
+                } else {
+                    JOptionPane.showMessageDialog(FormulariUsuari.this, "Error al donar d'alta l'usuari", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
     }
-    
+
     private void modificarUsuari() {
         titleLabel.setText("Modificar dades de l'usuari");
         tipusUsuari = new JSpinner(new SpinnerNumberModel(tipoUsuario, 1, 4, 1));
@@ -138,10 +158,14 @@ public class FormulariUsuari extends JDialog {
                 String nuevoUsername = usernameField.getText();
                 char[] nuevaPassword = passwordField.getPassword();
                 int nuevoTipoUsuario = (int) tipusUsuari.getValue();
-
-                // Lógica para modificar al usuario utilizando el servicio de la biblioteca
-                boolean modificacionExitosa = bibliotecaService.modificarUsuari(idUsuario, nuevoUsername, new String(nuevaPassword), nuevoTipoUsuario);
-
+                boolean modificacionExitosa = false;
+                if (!nomExiste(nuevoUsername)) {
+                    // Lógica para modificar al usuario utilizando el servicio de la biblioteca
+                    modificacionExitosa = bibliotecaService.modificarUsuari(idUsuario, nuevoUsername, new String(nuevaPassword), nuevoTipoUsuario);
+                } else {
+                    JOptionPane.showMessageDialog(FormulariUsuari.this, "Error al modificar. El nom de l'usuari ja existeix", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                
                 if (modificacionExitosa) {
                     JOptionPane.showMessageDialog(FormulariUsuari.this, "Usuari modificat amb èxit", "Èxit", JOptionPane.INFORMATION_MESSAGE);
                     dispose();
