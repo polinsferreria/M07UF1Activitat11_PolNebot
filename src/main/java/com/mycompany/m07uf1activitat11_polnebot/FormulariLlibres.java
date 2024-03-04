@@ -40,7 +40,7 @@ public class FormulariLlibres extends JDialog {
         formulariLlibres();
     }
 
-    public FormulariLlibres(JFrame parent, int idLlibre, int idCodi, int idTipusFons, String titol, String autor,
+    public FormulariLlibres(JFrame parent, int idLlibre, int idCodi, int idTipusFons, String titol, String autor,//hay q añadir codigo libro ej: 09876543234567
             String isbn, int quantitatDisponible, int idPrestatge, int idBalda, BibliotecaService bibliotecaService) {
         super(parent, "Modificar un Llibre", true);
         this.bibliotecaService = bibliotecaService;
@@ -101,7 +101,7 @@ public class FormulariLlibres extends JDialog {
 
         gbc.gridx = 1;
         
-        quantitatDisponibleNum = new JSpinner(new SpinnerNumberModel(1, 1, 4, 1));
+        quantitatDisponibleNum = new JSpinner(new SpinnerNumberModel(1, 1, Integer.MAX_VALUE, 1));
         inputPanel.add(quantitatDisponibleNum, gbc);
         //quantitatDisponibleField = new JTextField(15);
         //inputPanel.add(quantitatDisponibleField, gbc);
@@ -227,7 +227,8 @@ public class FormulariLlibres extends JDialog {
                 String nuevoTitol = titolField.getText();
                 String nuevoAutor = autorField.getText();
                 String nuevoIsbn = isbnField.getText();
-                int nuevaQuantitatDisponible = Integer.parseInt(quantitatDisponibleField.getText());
+                //int nuevaQuantitatDisponible = Integer.parseInt(quantitatDisponibleField.getText());
+                int nuevaQuantitatDisponible = (int)quantitatDisponibleNum.getValue();
 
                 // Obtener las IDs seleccionadas desde los JComboBox
                 int selectedIdTipusFons = extraerIdDesdeItem(idTipusFonsComboBox.getSelectedItem().toString());
@@ -253,7 +254,8 @@ public class FormulariLlibres extends JDialog {
         titolField.setText(titol);
         autorField.setText(autor);
         isbnField.setText(isbn);
-        quantitatDisponibleField.setText(String.valueOf(quantitatDisponible));
+        quantitatDisponibleNum = new JSpinner(new SpinnerNumberModel(quantitatDisponible, 1, Integer.MAX_VALUE, 1));
+        //quantitatDisponibleField.setText(String.valueOf(quantitatDisponible));
 
         // Cargar los Tipus Fons, Prestatges y Baldes en los JComboBox
         cargarTipusFonsEnComboBox();
@@ -276,8 +278,9 @@ public class FormulariLlibres extends JDialog {
                 String nuevoTitol = titolField.getText();
                 String nuevoAutor = autorField.getText();
                 String nuevoIsbn = isbnField.getText();
-                int nuevaQuantitatDisponible = Integer.parseInt(quantitatDisponibleField.getText());
-
+                //int nuevaQuantitatDisponible = Integer.parseInt(quantitatDisponibleField.getText());
+                int nuevaQuantitatDisponible = (int)quantitatDisponibleNum.getValue();
+                
                 // Obtener las IDs seleccionadas desde los JComboBox
                 int selectedIdTipusFons = extraerIdDesdeItem(idTipusFonsComboBox.getSelectedItem().toString());
                 int selectedIdPrestatge = extraerIdDesdeItem(idPrestatgeComboBox.getSelectedItem().toString());
