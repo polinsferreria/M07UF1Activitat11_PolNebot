@@ -25,6 +25,7 @@ public class FormulariLlibres extends JDialog {
     private JTextField titolField;
     private JTextField autorField;
     private JTextField isbnField;
+    private JSpinner quantitatDisponibleNum;
     private JTextField quantitatDisponibleField;
     private JComboBox<String> idTipusFonsComboBox;
     private JComboBox<String> idPrestatgeComboBox;
@@ -99,8 +100,11 @@ public class FormulariLlibres extends JDialog {
         inputPanel.add(new JLabel("Quantitat Disponible:"), gbc);
 
         gbc.gridx = 1;
-        quantitatDisponibleField = new JTextField(15);
-        inputPanel.add(quantitatDisponibleField, gbc);
+        
+        quantitatDisponibleNum = new JSpinner(new SpinnerNumberModel(1, 1, 4, 1));
+        inputPanel.add(quantitatDisponibleNum, gbc);
+        //quantitatDisponibleField = new JTextField(15);
+        //inputPanel.add(quantitatDisponibleField, gbc);
 
         gbc.gridy++;
         gbc.gridx = 0;
