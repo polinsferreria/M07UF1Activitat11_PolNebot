@@ -381,7 +381,7 @@ public class MenuPrincipal extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Lógica para dar de alta a un usuario
-                FormulariUsuari fu = new Formular56iUsuari(MenuPrincipal.this, bibliotecaService);
+                FormulariUsuari fu = new FormulariUsuari(MenuPrincipal.this, bibliotecaService);
 
             }
         });
