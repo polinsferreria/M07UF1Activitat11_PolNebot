@@ -451,6 +451,7 @@ public class MenuPrincipal extends JFrame {
     }
 
     private void cargarConsulta(String tipoConsulta) {
+        
         if (this.tipoConsulta <= 3) {
             //<editor-fold defaultstate="collapsed" desc="Consulta Usuaris">
             ArrayList<Usuaris> usuaris = (ArrayList<Usuaris>) bibliotecaService.obtenirTotsElsUsuaris(); // Obtener ArrayList de usuarios
@@ -464,8 +465,10 @@ public class MenuPrincipal extends JFrame {
                 data[i][2] = usuari.getIdTipusUsuari();
             }
             String[] columnNames = {"ID", "Nom", "Tipus Usuari"};
-            ConsultaUsuaris(columnNames, data, tipoConsulta);
+            //ConsultaUsuaris(columnNames, data, tipoConsulta);
             System.out.println("imprimir Usuaris");
+            ConsultaGenerica<Usuaris> consultaBaldes = new ConsultaGenerica<>(MenuPrincipal.this, bibliotecaService, bibliotecaService.obtenirTotsElsUsuaris(), columnNames, "Usuaris");
+
             //</editor-fold>
         } else if (this.tipoConsulta >= 4 && this.tipoConsulta <= 6) {
             //<editor-fold defaultstate="collapsed" desc="Consulta Llibres">
@@ -487,11 +490,14 @@ public class MenuPrincipal extends JFrame {
             }
 
             String[] columnNames = {"ID", "IdCodi", "IdTipusFons", "Titol", "Autor", "ISBN", "Quantitat Disponible", "idPrestatge", "idBalda"};
-            ConsultaLlibres(columnNames, data, tipoConsulta);
+            //ConsultaLlibres(columnNames, data, tipoConsulta);
             System.out.println("imprimir Llibres");
+            //---------------------------------------------------------------------------
+            ConsultaGenerica<Llibre> consultaBaldes = new ConsultaGenerica<>(MenuPrincipal.this, bibliotecaService, bibliotecaService.obtenirTotsElsLlibres(), columnNames, "Llibres");
+
             //</editor-fold>
         } else if (this.tipoConsulta >= 7 && this.tipoConsulta <= 9) {
-            //<editor-fold defaultstate="collapsed" desc="Consulta MantenimentFons">
+            //<editor-fold defaultstate="collapsed" desc="Consulta TipusFons">
             ArrayList<TipusFons> tipusFons = (ArrayList<TipusFons>) bibliotecaService.obtenirTotsElsTipusFons(); // Obtener ArrayList de tipusFons
 
             Object[][] data = new Object[tipusFons.size()][2];
@@ -502,8 +508,10 @@ public class MenuPrincipal extends JFrame {
                 data[i][1] = tipus.getTipus();
             }
             String[] columnNames = {"ID", "Tipus"};
-            ConsultaTipusFons(columnNames, data, tipoConsulta);
+            //ConsultaTipusFons(columnNames, data, tipoConsulta);
             System.out.println("imprimir TipusFons");
+            ConsultaGenerica<TipusFons> consultaBaldes = new ConsultaGenerica<>(MenuPrincipal.this, bibliotecaService, bibliotecaService.obtenirTotsElsTipusFons(), columnNames, "TipusFons");
+
             //</editor-fold>
         } else if (this.tipoConsulta >= 10 && this.tipoConsulta <= 12) {
             //<editor-fold defaultstate="collapsed" desc="Consulta Prestatges">
@@ -517,15 +525,17 @@ public class MenuPrincipal extends JFrame {
                 data[i][1] = prestatge.getNom();
             }
             String[] columnNames = {"ID", "Nom"};
-            ConsultaPrestatges(columnNames, data, tipoConsulta);
+            //ConsultaPrestatges(columnNames, data, tipoConsulta);
             System.out.println("imprimir prestatges");
+            ConsultaGenerica<Prestatges> consultaBaldes = new ConsultaGenerica<>(MenuPrincipal.this, bibliotecaService, bibliotecaService.obtenirTotsElsPrestatges(), columnNames, "Prestatges");
+
             //</editor-fold>
         } else if (this.tipoConsulta >= 13 && this.tipoConsulta <= 15) {
             //<editor-fold defaultstate="collapsed" desc="Consulta Baldes">
             ArrayList<Baldes> baldes = (ArrayList<Baldes>) bibliotecaService.obtenirTotsElsBaldes(); // Obtener ArrayList de Baldes
 
             Object[][] data = new Object[baldes.size()][3];
-
+            
             for (int i = 0; i < baldes.size(); i++) {
                 Baldes Balda = baldes.get(i);
                 data[i][0] = Balda.getIdBalda();
@@ -533,13 +543,15 @@ public class MenuPrincipal extends JFrame {
                 data[i][2] = Balda.getIdPrestatge();
             }
             String[] columnNames = {"ID", "Nom", "ID Prestatge"};
-            ConsultaBaldes(columnNames, data, tipoConsulta);
+            //ConsultaBaldes(columnNames, data, tipoConsulta);
             System.out.println("imprimir baldes");
+            ConsultaGenerica<Baldes> consultaBaldes = new ConsultaGenerica<>(MenuPrincipal.this, bibliotecaService, bibliotecaService.obtenirTotsElsBaldes(), columnNames, "Baldes");
+
             //</editor-fold>
         }
     }
 
-    private void ConsultaLlibres(String[] columnNames, Object[][] data, String tipoConsulta) {
+   /* private void ConsultaLlibres(String[] columnNames, Object[][] data, String tipoConsulta) {
         JDialog dialog = new JDialog(MenuPrincipal.this, tipoConsulta, true);
         dialog.setSize(700, 400);
 
@@ -974,7 +986,7 @@ public class MenuPrincipal extends JFrame {
 
         dialog.setVisible(true);
     }
-
+*/
     private void MostrarMenuSegunPermisos() {
         // Implementa la lógica para mostrar el menú principal aquí
         // Puedes crear y mostrar otros JDialog, JFrame o componentes según sea necesario
