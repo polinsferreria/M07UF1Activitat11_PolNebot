@@ -4,6 +4,7 @@
  */
 package com.mycompany.m07uf1activitat11_polnebot;
 
+import com.mycompany.m07uf1activitat11_polnebot.dades.TipusFons;
 import com.mycompany.m07uf1activitat11_polnebot.logica.BibliotecaService;
 import javax.swing.*;
 import java.awt.*;
@@ -93,7 +94,7 @@ public class FormulariTipusFons extends JDialog {
                 String nuevoTipus = tipusField.getText();
 
                 // Lógica para dar de alta el TipusFons utilizando el servicio de la biblioteca
-                boolean altaExitosa = bibliotecaService.altaTipusFons(nuevoTipus);
+                boolean altaExitosa = bibliotecaService.getTipusFonsDAO().altaEntidad(new TipusFons(nuevoTipus));
 
                 if (altaExitosa) {
                     JOptionPane.showMessageDialog(FormulariTipusFons.this, "TipusFons donat d'alta amb èxit", "Èxit", JOptionPane.INFORMATION_MESSAGE);
@@ -116,7 +117,7 @@ public class FormulariTipusFons extends JDialog {
                 String nuevoTipus = tipusField.getText();
 
                 // Lógica para modificar el TipusFons utilizando el servicio de la biblioteca
-                boolean modificacionExitosa = bibliotecaService.modificarTipusFons(idTipusFons, nuevoTipus);
+                boolean modificacionExitosa = bibliotecaService.getTipusFonsDAO().modificarEntidad(new TipusFons(idTipusFons, nuevoTipus));
 
                 if (modificacionExitosa) {
                     JOptionPane.showMessageDialog(FormulariTipusFons.this, "TipusFons modificat amb èxit", "Èxit", JOptionPane.INFORMATION_MESSAGE);

@@ -4,11 +4,7 @@
  */
 package com.mycompany.m07uf1activitat11_polnebot.logica;
 
-import com.mycompany.m07uf1activitat11_polnebot.dades.Baldes;
 import com.mycompany.m07uf1activitat11_polnebot.dades.Llibre;
-import com.mycompany.m07uf1activitat11_polnebot.dades.Prestatges;
-import com.mycompany.m07uf1activitat11_polnebot.dades.TipusFons;
-import com.mycompany.m07uf1activitat11_polnebot.dades.Usuaris;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
@@ -17,8 +13,76 @@ import javax.persistence.*;
  *
  * @author pol^^
  */
-    public class BibliotecaService {
+public class BibliotecaService {
 
+    private LlibreDAO llibreDAO;
+    private BaldesDAO baldesDAO;
+    private ConfiguracioDAO configuracioDAO;
+    private PrestatgesDAO prestatgesDAO;
+    private PersonalDAO personalDAO;
+    private PrivilegisDAO privilegisDAO;
+    private TipusFonsDAO tipusFonsDAO;
+    private TipusUsuariDAO tipusUsuariDAO;
+    private UsuarisDAO usuarisDAO;
+    
+    public static EntityManagerFactory emf;
+    public static EntityManager em;
+
+    public BibliotecaService() {
+        emf = Persistence.createEntityManagerFactory("com.mycompany_m07uf1ACT11_PolNebot_jar_1.0-SNAPSHOT_PU");
+        em = emf.createEntityManager();
+        
+        llibreDAO = new LlibreDAO();
+        baldesDAO = new BaldesDAO();
+        configuracioDAO = new ConfiguracioDAO();
+        prestatgesDAO = new PrestatgesDAO();
+        personalDAO = new PersonalDAO();
+        privilegisDAO = new PrivilegisDAO();
+        tipusFonsDAO = new TipusFonsDAO();
+        tipusUsuariDAO = new TipusUsuariDAO();
+        usuarisDAO = new UsuarisDAO();
+        
+        
+        
+    }
+
+    public PrestatgesDAO getPrestatgesDAO() {
+        return prestatgesDAO;
+    }
+
+    public LlibreDAO getLlibreDAO() {
+        return llibreDAO;
+    }
+
+    public BaldesDAO getBaldesDAO() {
+        return baldesDAO;
+    }
+
+    public ConfiguracioDAO getConfiguracioDAO() {
+        return configuracioDAO;
+    }
+
+    public PersonalDAO getPersonalDAO() {
+        return personalDAO;
+    }
+
+    public PrivilegisDAO getPrivilegisDAO() {
+        return privilegisDAO;
+    }
+
+    public TipusFonsDAO getTipusFonsDAO() {
+        return tipusFonsDAO;
+    }
+
+    public TipusUsuariDAO getTipusUsuariDAO() {
+        return tipusUsuariDAO;
+    }
+
+    public UsuarisDAO getUsuarisDAO() {
+        return usuarisDAO;
+    }
+    
+    /*
     private EntityManagerFactory emf;
     private EntityManager em;
 
@@ -546,5 +610,7 @@ import javax.persistence.*;
         em.close();
         emf.close();
     }
+     */
 
+    
 }

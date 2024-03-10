@@ -4,6 +4,7 @@
  */
 package com.mycompany.m07uf1activitat11_polnebot;
 
+import com.mycompany.m07uf1activitat11_polnebot.dades.Prestatges;
 import com.mycompany.m07uf1activitat11_polnebot.logica.BibliotecaService;
 import javax.swing.*;
 import java.awt.*;
@@ -74,16 +75,16 @@ public class FormulariPrestatges extends JDialog {
         inputPanel.add(confirmButton, gbc);
 
         if (nomPrestatges != null) {
-            modificarTipusFons();
+            modificarPrestatge();
         } else {
-            altaTipusFons();
+            altaPrestatge();
         }
 
         add(inputPanel, BorderLayout.CENTER);
         setVisible(true);
     }
 
-    private void altaTipusFons() {
+    private void altaPrestatge() {
         titleLabel.setText("Introduir dades del nou prestatge");
 
         confirmButton.addActionListener(new ActionListener() {
@@ -93,7 +94,7 @@ public class FormulariPrestatges extends JDialog {
                 String nuevoNomPrestatges = prestatgesField.getText();
 
                 // Lógica para dar de alta el prestatge utilizando el servicio de la biblioteca
-                boolean altaExitosa = bibliotecaService.altaPrestatges(nuevoNomPrestatges);
+                boolean altaExitosa = bibliotecaService.getPrestatgesDAO().altaEntidad(new Prestatges(nuevoNomPrestatges));
 
                 if (altaExitosa) {
                     JOptionPane.showMessageDialog(FormulariPrestatges.this, "Prestatge donat d'alta amb èxit", "Èxit", JOptionPane.INFORMATION_MESSAGE);
@@ -105,7 +106,7 @@ public class FormulariPrestatges extends JDialog {
         });
     }
 
-    private void modificarTipusFons() {
+    private void modificarPrestatge() {
         titleLabel.setText("Modificar dades del prestatge");
         prestatgesField.setText(nomPrestatges);
 
@@ -116,7 +117,7 @@ public class FormulariPrestatges extends JDialog {
                 String nuevoNomPrestatges = prestatgesField.getText();
 
                 // Lógica para modificar el prestatge utilizando el servicio de la biblioteca
-                boolean modificacionExitosa = bibliotecaService.modificarPrestatges(idPrestatges, nuevoNomPrestatges);
+                boolean modificacionExitosa = bibliotecaService.getPrestatgesDAO().modificarEntidad(new Prestatges(idPrestatges, nuevoNomPrestatges));
 
                 if (modificacionExitosa) {
                     JOptionPane.showMessageDialog(FormulariPrestatges.this, "Prestatge modificat amb èxit", "Èxit", JOptionPane.INFORMATION_MESSAGE);

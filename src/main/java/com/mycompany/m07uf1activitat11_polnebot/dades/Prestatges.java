@@ -20,6 +20,17 @@ public class Prestatges {
     @Column(name = "nom")
     private String nom;
 
+    public Prestatges(String nom) {
+        this.nom = nom;
+    }
+
+    public Prestatges(int idPrestatge, String nom) {
+        this.idPrestatge = idPrestatge;
+        this.nom = nom;
+    }
+    
+    
+
     public int getIdPrestatge() {
         return idPrestatge;
     }

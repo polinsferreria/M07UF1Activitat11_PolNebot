@@ -26,6 +26,22 @@ public class Usuaris {
     @Column(name = "idTipusUsuari")
     private int idTipusUsuari;
 
+    public Usuaris(int idUsuari, String nomUsuari, String password, TipusUsuari tipusUsuari) {
+        this.idUsuari = idUsuari;
+        this.nomUsuari = nomUsuari;
+        this.password = password;
+        this.idTipusUsuari = tipusUsuari.getIdTipusUsuari();
+        this.tipusUsuari = tipusUsuari;
+    }
+
+    public Usuaris(String nomUsuari, String password, TipusUsuari tipusUsuari) {
+        this.nomUsuari = nomUsuari;
+        this.password = password;
+        this.idTipusUsuari = tipusUsuari.getIdTipusUsuari();
+    }
+
+    public Usuaris(){}
+    
     public int getIdUsuari() {
         return idUsuari;
     }

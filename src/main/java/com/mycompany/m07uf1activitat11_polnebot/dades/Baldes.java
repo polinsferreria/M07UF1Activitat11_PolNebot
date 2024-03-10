@@ -24,6 +24,19 @@ public class Baldes {
     @Column(name = "idPrestatge")
     private int idPrestatge;
 
+    public Baldes(String nom, int idPrestatge) {
+        this.nom = nom;
+        this.idPrestatge = idPrestatge;
+    }
+
+    public Baldes(int idBalda, String nom, int idPrestatge) {
+        this.idBalda = idBalda;
+        this.nom = nom;
+        this.idPrestatge = idPrestatge;
+    }
+
+    
+    
     public int getIdBalda() {
         return idBalda;
     }

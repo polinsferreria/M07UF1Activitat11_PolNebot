@@ -44,6 +44,17 @@ public class Llibre {
     @Column(name = "idBalda")
     private int idBalda;
 
+    public Llibre(int idCodi, int idTipusfons, String titol, String autor, String isbn, int quantitatDisponible, int idPrestatge, int idBalda) {
+        this.idCodi = idCodi;
+        this.idTipusfons = idTipusfons;
+        this.titol = titol;
+        this.autor = autor;
+        this.isbn = isbn;
+        this.quantitatDisponible = quantitatDisponible;
+        this.idPrestatge = idPrestatge;
+        this.idBalda = idBalda;
+    }
+
     public int getIdLlibre() {
         return idLlibre;
     }

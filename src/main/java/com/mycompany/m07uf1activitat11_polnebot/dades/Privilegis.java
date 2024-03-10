@@ -21,8 +21,7 @@ public class Privilegis {
     @Column(name = "nom")
     private String nom;
 
-    @Column(name = "privilegis")
-    private int privilegis;
+    
 
     public int getIdPrivilegis() {
         return idPrivilegis;
@@ -39,14 +38,16 @@ public class Privilegis {
     public void setNom(String nom) {
         this.nom = nom;
     }
-
+    
+    /*@Column(name = "privilegis")
+    private int privilegis;
     public int getPrivilegis() {
         return privilegis;
     }
 
     public void setPrivilegis(int privilegis) {
         this.privilegis = privilegis;
-    }
+    }*/
 
     
 }

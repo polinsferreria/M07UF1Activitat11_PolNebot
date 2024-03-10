@@ -17,11 +17,11 @@ public class TipusUsuari {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idTipusUsuari;
 
-    @Column(name = "tipus")
+    @Column(name = "tipus") 
     private String tipus;
 
-    @Column(name = "privilegis")
-    private int privilegis;
+    @Column(name = "idPrivilegis")
+    private int idPrivilegis;
 
     public int getIdTipusUsuari() {
         return idTipusUsuari;
@@ -39,13 +39,15 @@ public class TipusUsuari {
         this.tipus = tipus;
     }
 
-    public int getPrivilegis() {
-        return privilegis;
+    public int getIdPrivilegis() {
+        return idPrivilegis;
     }
 
-    public void setPrivilegis(int privilegis) {
-        this.privilegis = privilegis;
+    public void setIdPrivilegis(int idPrivilegis) {
+        this.idPrivilegis = idPrivilegis;
     }
 
-    
+    @ManyToOne
+    @JoinColumn(name = "idPrivilegis", insertable = false, updatable = false)
+    private Privilegis privilegis;
 }

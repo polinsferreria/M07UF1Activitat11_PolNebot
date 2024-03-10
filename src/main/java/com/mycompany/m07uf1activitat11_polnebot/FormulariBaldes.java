@@ -1,5 +1,6 @@
 package com.mycompany.m07uf1activitat11_polnebot;
 
+import com.mycompany.m07uf1activitat11_polnebot.dades.Baldes;
 import com.mycompany.m07uf1activitat11_polnebot.logica.BibliotecaService;
 import com.mycompany.m07uf1activitat11_polnebot.dades.Prestatges;
 
@@ -86,7 +87,7 @@ public class FormulariBaldes extends JDialog {
     }
 
     private void cargarPrestatgesEnComboBox() {
-        List<Prestatges> prestatges = bibliotecaService.obtenirTotsElsPrestatges();
+        List<Prestatges> prestatges = bibliotecaService.getPrestatgesDAO().obtenerTodos();
 
         DefaultComboBoxModel<String> comboBoxModel = new DefaultComboBoxModel<>();
 
@@ -123,7 +124,7 @@ public class FormulariBaldes extends JDialog {
                 int selectedIdPrestatge = extraerIdPrestatgeDesdeItem(idPrestatgesComboBox.getSelectedItem().toString());
 
                 // Lógica para dar de alta la balda utilizando el servicio de la biblioteca
-                boolean altaExitosa = bibliotecaService.altaBaldes(nuevoNomBalda, selectedIdPrestatge);
+                boolean altaExitosa = bibliotecaService.getBaldesDAO().altaEntidad(new Baldes(nuevoNomBalda, selectedIdPrestatge));
 
                 if (altaExitosa) {
                     JOptionPane.showMessageDialog(FormulariBaldes.this, "Balda donada d'alta amb èxit", "Èxit", JOptionPane.INFORMATION_MESSAGE);
@@ -143,7 +144,7 @@ public class FormulariBaldes extends JDialog {
         cargarPrestatgesEnComboBox();
 
         // Seleccionar el elemento en el JComboBox basado en la ID almacenada previamente
-        String itemToSelect = idPrestatges + ": " + bibliotecaService.obtenirNomPrestatgePerId(idPrestatges);
+        String itemToSelect = idPrestatges + ": " + bibliotecaService.getPrestatgesDAO().obtenirNomPrestatgePerId(idPrestatges);
         idPrestatgesComboBox.setSelectedItem(itemToSelect);
 
         confirmButton.addActionListener(new ActionListener() {
@@ -156,7 +157,7 @@ public class FormulariBaldes extends JDialog {
                 int selectedIdPrestatge = extraerIdPrestatgeDesdeItem(idPrestatgesComboBox.getSelectedItem().toString());
                 
                 // Lógica para modificar la balda utilizando el servicio de la biblioteca
-                boolean modificacionExitosa = bibliotecaService.modificarBaldes(idBalda, nuevoNomBalda, selectedIdPrestatge);
+                boolean modificacionExitosa = bibliotecaService.getBaldesDAO().modificarEntidad(new Baldes(idBalda, nuevoNomBalda, selectedIdPrestatge));
 
                 if (modificacionExitosa) {
                     JOptionPane.showMessageDialog(FormulariBaldes.this, "Balda modificada amb èxit", "Èxit", JOptionPane.INFORMATION_MESSAGE);

@@ -1,6 +1,7 @@
 package com.mycompany.m07uf1activitat11_polnebot;
 
 import com.mycompany.m07uf1activitat11_polnebot.dades.Baldes;
+import com.mycompany.m07uf1activitat11_polnebot.dades.Llibre;
 import com.mycompany.m07uf1activitat11_polnebot.logica.BibliotecaService;
 import com.mycompany.m07uf1activitat11_polnebot.dades.Prestatges;
 import com.mycompany.m07uf1activitat11_polnebot.dades.TipusFons;
@@ -155,7 +156,7 @@ public class FormulariLlibres extends JDialog {
     }
 
     private void cargarTipusFonsEnComboBox() {
-        List<TipusFons> tipusFonsList = bibliotecaService.obtenirTotsElsTipusFons();
+        List<TipusFons> tipusFonsList = bibliotecaService.getTipusFonsDAO().obtenerTodos();
 
         DefaultComboBoxModel<String> comboBoxModel = new DefaultComboBoxModel<>();
 
@@ -169,7 +170,7 @@ public class FormulariLlibres extends JDialog {
     }
 
     private void cargarPrestatgesEnComboBox() {
-        List<Prestatges> prestatgesList = bibliotecaService.obtenirTotsElsPrestatges();
+        List<Prestatges> prestatgesList = bibliotecaService.getPrestatgesDAO().obtenerTodos();
 
         DefaultComboBoxModel<String> comboBoxModel = new DefaultComboBoxModel<>();
 
@@ -183,13 +184,13 @@ public class FormulariLlibres extends JDialog {
     }
 
     private void cargarBaldesEnComboBox() {
-        List<Baldes> baldesList = bibliotecaService.obtenirTotsElsBaldes();
+        List<Baldes> baldesList = bibliotecaService.getBaldesDAO().obtenerTodos();
         if (!baldesList.isEmpty()) {
             // Obtener la ID seleccionada desde el JComboBox de Prestatges
             int selectedIdPrestatge = extraerIdDesdeItem(idPrestatgeComboBox.getSelectedItem().toString());
 
             // Obtener las Baldes en base al Prestatge seleccionado
-            List<Baldes> baldesListIdPrestatge = bibliotecaService.obtenirBaldesPerPrestatge(selectedIdPrestatge);
+            List<Baldes> baldesListIdPrestatge = bibliotecaService.getBaldesDAO().obtenirBaldesPerPrestatge(selectedIdPrestatge);
 
             DefaultComboBoxModel<String> comboBoxModel = new DefaultComboBoxModel<>();
 
@@ -232,8 +233,8 @@ public class FormulariLlibres extends JDialog {
                 int selectedIdBalda = extraerIdDesdeItem(idBaldaComboBox.getSelectedItem().toString());
 
                 // Lógica para dar de alta el libro utilizando el servicio de la biblioteca
-                boolean altaExitosa = bibliotecaService.altaLlibre(selectedIdTipusFons, nuevoTitol, nuevoAutor,
-                        nuevoIsbn, nuevaQuantitatDisponible, selectedIdPrestatge, selectedIdBalda);
+                boolean altaExitosa = bibliotecaService.getLlibreDAO().altaEntidad(new Llibre(43245,selectedIdTipusFons, nuevoTitol, nuevoAutor,
+                        nuevoIsbn, nuevaQuantitatDisponible, selectedIdPrestatge, selectedIdBalda));
 
                 if (altaExitosa) {
                     JOptionPane.showMessageDialog(FormulariLlibres.this, "Llibre donat d'alta amb èxit", "Èxit", JOptionPane.INFORMATION_MESSAGE);
@@ -252,15 +253,15 @@ public class FormulariLlibres extends JDialog {
         isbnField.setText(isbn);
         quantitatDisponibleNum.setValue(quantitatDisponible);
 
-        // Cargar los Tipus Fons, Prestatges y Baldes en los JComboBox
+        /* Cargar los Tipus Fons, Prestatges y Baldes en los JComboBox
         cargarTipusFonsEnComboBox();
         cargarPrestatgesEnComboBox();
-        cargarBaldesEnComboBox();
+        cargarBaldesEnComboBox();*/
 
         // Seleccionar los elementos en los JComboBox basados en las IDs almacenadas previamente
-        String tipusFonsItemToSelect = idTipusFons + ": " + bibliotecaService.obtenirNomTipusFonsPerId(idTipusFons);
-        String prestatgeItemToSelect = idPrestatge + ": " + bibliotecaService.obtenirNomPrestatgePerId(idPrestatge);
-        String baldaItemToSelect = idBalda + ": " + bibliotecaService.obtenirNomBaldaPerId(idBalda);
+        String tipusFonsItemToSelect = idTipusFons + ": " + bibliotecaService.getTipusFonsDAO().obtenirNomTipusFonsPerId(idTipusFons);
+        String prestatgeItemToSelect = idPrestatge + ": " + bibliotecaService.getPrestatgesDAO().obtenirNomPrestatgePerId(idPrestatge);
+        String baldaItemToSelect = idBalda + ": " + bibliotecaService.getBaldesDAO().obtenirNomBaldaPerId(idBalda);
 
         idTipusFonsComboBox.setSelectedItem(tipusFonsItemToSelect);
         idPrestatgeComboBox.setSelectedItem(prestatgeItemToSelect);
@@ -279,10 +280,10 @@ public class FormulariLlibres extends JDialog {
                 int selectedIdTipusFons = extraerIdDesdeItem(idTipusFonsComboBox.getSelectedItem().toString());
                 int selectedIdPrestatge = extraerIdDesdeItem(idPrestatgeComboBox.getSelectedItem().toString());
                 int selectedIdBalda = extraerIdDesdeItem(idBaldaComboBox.getSelectedItem().toString());
-
+                
                 // Lógica para modificar el libro utilizando el servicio de la biblioteca
-                boolean modificacionExitosa = bibliotecaService.modificarLlibre(idLlibre, selectedIdTipusFons, nuevoTitol,
-                        nuevoAutor, nuevoIsbn, nuevaQuantitatDisponible, selectedIdPrestatge, selectedIdBalda);
+                boolean modificacionExitosa = bibliotecaService.getLlibreDAO().modificarEntidad(new Llibre(idLlibre, selectedIdTipusFons, nuevoTitol,
+                        nuevoAutor, nuevoIsbn, nuevaQuantitatDisponible, selectedIdPrestatge, selectedIdBalda));
 
                 if (modificacionExitosa) {
                     JOptionPane.showMessageDialog(FormulariLlibres.this, "Llibre modificat amb èxit", "Èxit", JOptionPane.INFORMATION_MESSAGE);

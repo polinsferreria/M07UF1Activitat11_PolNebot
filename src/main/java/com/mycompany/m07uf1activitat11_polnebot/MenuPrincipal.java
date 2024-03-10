@@ -25,7 +25,7 @@ import javax.swing.event.ListSelectionListener;
 public class MenuPrincipal extends JFrame {
 
     private BibliotecaService bibliotecaService;
-    private Usuaris Usuarilogin;
+    public static Usuaris Usuarilogin;
     private JTextField usernameField;
     private JPasswordField passwordField;
     private JMenuBar menuBar;
@@ -33,6 +33,7 @@ public class MenuPrincipal extends JFrame {
     private JMenu menuPrincipal;
     private JMenu llibresMenu;
     private JMenu prestatgesMenu;
+    private JMenu prestecMenu;
     private JMenu BaldesMenu;
     private JMenu TipusFonsMenu;
     private JMenu menuAjuda;
@@ -101,7 +102,7 @@ public class MenuPrincipal extends JFrame {
 
                 System.out.println("Contraseña ingresada: " + new String(password));
                 // Realizar la autenticación con el servicio de biblioteca
-                boolean isAuthenticated = bibliotecaService.authenticateUser(username, new String(password));
+                boolean isAuthenticated = bibliotecaService.getUsuarisDAO().authenticateUser(username, new String(password));
 
                 if (isAuthenticated) {
 
@@ -180,7 +181,7 @@ public class MenuPrincipal extends JFrame {
 
         //<editor-fold defaultstate="collapsed" desc="Menú Llibres">
         // Menú Llibres
-        String[] columnNames = {"ID", "Nom", "Tipus Usuari"};
+        
         llibresMenu = new JMenu("Llibres");
         JMenuItem altaLlibreMenuItem = new JMenuItem("Alta");
         altaLlibreMenuItem.addActionListener(new ActionListener() {
@@ -191,26 +192,6 @@ public class MenuPrincipal extends JFrame {
             }
         });
 
-        JMenuItem baixaLlibreMenuItem = new JMenuItem("Modifica");
-        baixaLlibreMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Lógica para salir de la aplicación
-                tipoConsulta = 6;
-                cargarConsulta("Modificar Llibres");
-            }
-        });
-
-        JMenuItem modificaLlibreMenuItem = new JMenuItem("Baixa");
-        modificaLlibreMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Lógica para salir de la aplicación
-                tipoConsulta = 5;
-                cargarConsulta("Baixa Llibres");
-            }
-        });
-
         JMenuItem consultaLlibreMenuItem = new JMenuItem("Consulta");
         consultaLlibreMenuItem.addActionListener(new ActionListener() {
             @Override
@@ -218,14 +199,11 @@ public class MenuPrincipal extends JFrame {
                 // Lógica para salir de la aplicación
                 tipoConsulta = 1;
                 String[] columnNames = {"ID", "IdCodi", "IdTipusFons", "Titol", "Autor", "ISBN", "Quantitat Disponible", "idPrestatge", "idBalda"};
-                ConsultaGenerica<Llibre> consulta = new ConsultaGenerica<>(MenuPrincipal.this, bibliotecaService, bibliotecaService.obtenirTotsElsLlibres(), columnNames, tipoConsulta);
-                cargarConsulta("Consulta de Llibres");
+                ConsultaGenerica<Llibre> consulta = new ConsultaGenerica<>(MenuPrincipal.this, bibliotecaService, bibliotecaService.getLlibreDAO().obtenerTodos(), columnNames, tipoConsulta);
             }
         });
 
         llibresMenu.add(altaLlibreMenuItem);
-        llibresMenu.add(baixaLlibreMenuItem);
-        llibresMenu.add(modificaLlibreMenuItem);
         llibresMenu.add(consultaLlibreMenuItem);
         //</editor-fold>
 
@@ -242,40 +220,18 @@ public class MenuPrincipal extends JFrame {
             }
         });
 
-        JMenuItem modificacionsPrestatgesMenuItem = new JMenuItem("Modificacions");
-        modificacionsPrestatgesMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Lógica para modificar Prestatges
-                tipoConsulta = 12;
-                cargarConsulta("Modificar Prestatges");
-            }
-        });
-
-        JMenuItem baixesPrestatgesMenuItem = new JMenuItem("Baixes");
-        baixesPrestatgesMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Lógica para eliminar Prestatges
-                tipoConsulta = 11;
-                cargarConsulta("Eliminar Prestatges");
-            }
-        });
-
         JMenuItem consultaPrestatgesMenuItem = new JMenuItem("Consulta");
         consultaPrestatgesMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Lógica para conultar Prestatges
                 tipoConsulta = 2;
-                ConsultaGenerica<Prestatges> consulta = new ConsultaGenerica<>(MenuPrincipal.this, bibliotecaService, bibliotecaService.obtenirTotsElsPrestatges(), columnNames, tipoConsulta);
-                cargarConsulta("Consulta de Prestatges");
+                String[] columnNames = {"ID", "Nom"};
+                ConsultaGenerica<Prestatges> consulta = new ConsultaGenerica<>(MenuPrincipal.this, bibliotecaService, bibliotecaService.getPrestatgesDAO().obtenerTodos(), columnNames, tipoConsulta);
             }
         });
 
         prestatgesMenu.add(altesPrestatgesMenuItem);
-        prestatgesMenu.add(modificacionsPrestatgesMenuItem);
-        prestatgesMenu.add(baixesPrestatgesMenuItem);
         prestatgesMenu.add(consultaPrestatgesMenuItem);
         //</editor-fold>
 
@@ -292,40 +248,18 @@ public class MenuPrincipal extends JFrame {
             }
         });
 
-        JMenuItem modificacionsBaldesMenuItem = new JMenuItem("Modificacions");
-        modificacionsBaldesMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Lógica para modificar Baldes
-                tipoConsulta = 15;
-                cargarConsulta("Modificar Baldes");
-            }
-        });
-
-        JMenuItem baixesBaldesMenuItem = new JMenuItem("Baixes");
-        baixesBaldesMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Lógica para eliminar Baldes
-                tipoConsulta = 14;
-                cargarConsulta("Eliminar Baldes");
-            }
-        });
-
         JMenuItem consultaBaldesMenuItem = new JMenuItem("Consulta");
         consultaBaldesMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Lógica para conultar Baldes
                 tipoConsulta = 3;
-                ConsultaGenerica<Baldes> consulta = new ConsultaGenerica<>(MenuPrincipal.this, bibliotecaService, bibliotecaService.obtenirTotsElsBaldes(), columnNames, tipoConsulta);
-                cargarConsulta("Consulta de Baldes");
+                String[] columnNames = {"ID", "nom","idPrestatge"};
+                ConsultaGenerica<Baldes> consulta = new ConsultaGenerica<>(MenuPrincipal.this, bibliotecaService, bibliotecaService.getBaldesDAO().obtenerTodos(), columnNames, tipoConsulta);
             }
         });
 
         BaldesMenu.add(altesBaldesMenuItem);
-        BaldesMenu.add(modificacionsBaldesMenuItem);
-        BaldesMenu.add(baixesBaldesMenuItem);
         BaldesMenu.add(consultaBaldesMenuItem);
         //</editor-fold>
 
@@ -342,40 +276,19 @@ public class MenuPrincipal extends JFrame {
             }
         });
 
-        JMenuItem modificacionsTipusFonsMenuItem = new JMenuItem("Modificacions");
-        modificacionsTipusFonsMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Lógica para modificar tipus fons
-                tipoConsulta = 9;
-                cargarConsulta("Modificar tipus fons");
-            }
-        });
-
-        JMenuItem baixesTipusFonsMenuItem = new JMenuItem("Baixes");
-        baixesTipusFonsMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Lógica para eliminar tipus fons
-                tipoConsulta = 8;
-                cargarConsulta("Eliminar tipus fons");
-            }
-        });
-
         JMenuItem consultaTipusFonsMenuItem = new JMenuItem("Consulta");
         consultaTipusFonsMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Lógica para conultar tipus fons
                 tipoConsulta = 4;
-                ConsultaGenerica<TipusFons> consulta = new ConsultaGenerica<>(MenuPrincipal.this, bibliotecaService, bibliotecaService.obtenirTotsElsTipusFons(), columnNames, tipoConsulta);;
-                cargarConsulta("Consulta de TipusFons");
+                String[] columnNames = {"ID", "Tipus"};
+                ConsultaGenerica<TipusFons> consulta = new ConsultaGenerica<>(MenuPrincipal.this, bibliotecaService, bibliotecaService.getTipusFonsDAO().obtenerTodos(), columnNames, tipoConsulta);;
+                
             }
         });
 
         TipusFonsMenu.add(altesTipusFonsMenuItem);
-        TipusFonsMenu.add(modificacionsTipusFonsMenuItem);
-        TipusFonsMenu.add(baixesTipusFonsMenuItem);
         TipusFonsMenu.add(consultaTipusFonsMenuItem);
         //</editor-fold>
 
@@ -392,7 +305,7 @@ public class MenuPrincipal extends JFrame {
             }
         });
 
-        JMenuItem baixaUsuariMenuItem = new JMenuItem("Baixa");
+        /*JMenuItem baixaUsuariMenuItem = new JMenuItem("Baixa");
         baixaUsuariMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -401,7 +314,7 @@ public class MenuPrincipal extends JFrame {
                 cargarConsulta("Eliminar un usuari");
 
             }
-        });
+        })
 
         JMenuItem modificaUsuariMenuItem = new JMenuItem("Modifica");
         modificaUsuariMenuItem.addActionListener(new ActionListener() {
@@ -411,7 +324,7 @@ public class MenuPrincipal extends JFrame {
                 tipoConsulta = 3;
                 cargarConsulta("Modificar un usuari");
             }
-        });
+        });;*/
 
         JMenuItem consultaUsuariMenuItem = new JMenuItem("Consulta");
         consultaUsuariMenuItem.addActionListener(new ActionListener() {
@@ -419,14 +332,15 @@ public class MenuPrincipal extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 // Lógica para salir de la aplicación
                 tipoConsulta = 5;
-                ConsultaGenerica<Usuaris> consulta = new ConsultaGenerica<>(MenuPrincipal.this, bibliotecaService, bibliotecaService.obtenirTotsElsUsuaris(), columnNames, tipoConsulta);;
-                cargarConsulta("Consulta d'usuaris");
+                String[] columnNames = {"ID", "Nom", "Password", "Tipus Usuari"};
+                ConsultaGenerica<Usuaris> consulta = new ConsultaGenerica<>(MenuPrincipal.this, bibliotecaService, bibliotecaService.getUsuarisDAO().obtenerTodos(), columnNames, tipoConsulta);;
+               
             }
         });
 
         usuarisMenu.add(altaUsuariMenuItem);
-        usuarisMenu.add(baixaUsuariMenuItem);
-        usuarisMenu.add(modificaUsuariMenuItem);
+        //usuarisMenu.add(baixaUsuariMenuItem);
+        //usuarisMenu.add(modificaUsuariMenuItem);
         usuarisMenu.add(consultaUsuariMenuItem);
         //</editor-fold>
 
@@ -445,23 +359,55 @@ public class MenuPrincipal extends JFrame {
 
         menuAjuda.add(tutorialItem);
         //</editor-fold>
+        
+        //<editor-fold defaultstate="collapsed" desc="Menú Prestec">
+        // Menú Manteniment fons
+        prestecMenu = new JMenu("Prestec");
+
+        JMenuItem altesPréstecMenuItem = new JMenuItem("Alta préstec");
+        altesPréstecMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Lógica para Alta de Prestatges
+                //FormulariPrestatges fp = new FormulariPrestatges(MenuPrincipal.this, bibliotecaService);
+            }
+        });
+
+        JMenuItem consultaPréstecMenuItem = new JMenuItem("Consulta");
+        consultaPréstecMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Lógica para conultar Prestatges
+                //tipoConsulta = 2;
+                //String[] columnNames = {"ID", "Nom"};
+                //ConsultaGenerica<Prestatges> consulta = new ConsultaGenerica<>(MenuPrincipal.this, bibliotecaService, bibliotecaService.getPrestatgesDAO().obtenerTodos(), columnNames, tipoConsulta);
+            }
+        });
+
+        prestecMenu.add(altesPréstecMenuItem);
+        prestecMenu.add(consultaPréstecMenuItem);
+        //</editor-fold>
 
         // Agregar menús a la barra de menú
         menuBar.add(usuarisMenu);
         //menuBar.add(Préstec);
         menuBar.add(menuAjuda);
-
+        
         // Establecer la barra de menú en el JFrame
         setJMenuBar(menuBar);
 
         menuBar.setVisible(true);
     }
-
+    
+    
+   /* 
+  //<editor-fold defaultstate="collapsed" desc="Consultas no generic">
+    
     private void cargarConsulta(String tipoConsulta) {
 
         if (this.tipoConsulta <= 3) {
             //<editor-fold defaultstate="collapsed" desc="Consulta Usuaris">
-            ArrayList<Usuaris> usuaris = (ArrayList<Usuaris>) bibliotecaService.obtenirTotsElsUsuaris(); // Obtener ArrayList de usuarios
+            ArrayList<Usuaris> usuaris = (ArrayList<Usuaris>) bibliotecaService.getUsuarisDAO().obtenerTodos(); // Obtener ArrayList de usuarios
 
             Object[][] data = new Object[usuaris.size()][3];
 
@@ -477,7 +423,7 @@ public class MenuPrincipal extends JFrame {
             //</editor-fold>
         } else if (this.tipoConsulta >= 4 && this.tipoConsulta <= 6) {
             //<editor-fold defaultstate="collapsed" desc="Consulta Llibres">
-            ArrayList<Llibre> llibres = (ArrayList<Llibre>) bibliotecaService.obtenirTotsElsLlibres(); // Obtener ArrayList de Llibres
+            ArrayList<Llibre> llibres = (ArrayList<Llibre>) bibliotecaService.getLlibreDAO().obtenerTodos(); // Obtener ArrayList de Llibres
 
             Object[][] data = new Object[llibres.size()][9];
 
@@ -498,12 +444,12 @@ public class MenuPrincipal extends JFrame {
             //ConsultaLlibres(columnNames, data, tipoConsulta);
             System.out.println("imprimir Llibres");
             //---------------------------------------------------------------------------
-            ConsultaGenerica<Llibre> consultaBaldes = new ConsultaGenerica<>(MenuPrincipal.this, bibliotecaService, bibliotecaService.obtenirTotsElsLlibres(), columnNames, 3);
+            ConsultaGenerica<Llibre> consultaBaldes = new ConsultaGenerica<>(MenuPrincipal.this, bibliotecaService, bibliotecaService.getLlibreDAO().obtenerTodos(), columnNames, 3);
 
             //</editor-fold>
         } else if (this.tipoConsulta >= 7 && this.tipoConsulta <= 9) {
             //<editor-fold defaultstate="collapsed" desc="Consulta TipusFons">
-            ArrayList<TipusFons> tipusFons = (ArrayList<TipusFons>) bibliotecaService.obtenirTotsElsTipusFons(); // Obtener ArrayList de tipusFons
+            ArrayList<TipusFons> tipusFons = (ArrayList<TipusFons>) bibliotecaService.getTipusFonsDAO().obtenerTodos(); // Obtener ArrayList de tipusFons
 
             Object[][] data = new Object[tipusFons.size()][2];
 
@@ -515,12 +461,12 @@ public class MenuPrincipal extends JFrame {
             String[] columnNames = {"ID", "Tipus"};
             //ConsultaTipusFons(columnNames, data, tipoConsulta);
             System.out.println("imprimir TipusFons");
-            ConsultaGenerica<TipusFons> consultaBaldes = new ConsultaGenerica<>(MenuPrincipal.this, bibliotecaService, bibliotecaService.obtenirTotsElsTipusFons(), columnNames, 2);
+            ConsultaGenerica<TipusFons> consultaBaldes = new ConsultaGenerica<>(MenuPrincipal.this, bibliotecaService, bibliotecaService.getTipusFonsDAO().obtenerTodos(), columnNames, 2);
 
             //</editor-fold>
         } else if (this.tipoConsulta >= 10 && this.tipoConsulta <= 12) {
             //<editor-fold defaultstate="collapsed" desc="Consulta Prestatges">
-            ArrayList<Prestatges> prestatges = (ArrayList<Prestatges>) bibliotecaService.obtenirTotsElsPrestatges(); // Obtener ArrayList de Prestatges
+            ArrayList<Prestatges> prestatges = (ArrayList<Prestatges>) bibliotecaService.getPrestatgesDAO().obtenerTodos(); // Obtener ArrayList de Prestatges
 
             Object[][] data = new Object[prestatges.size()][2];
 
@@ -532,12 +478,12 @@ public class MenuPrincipal extends JFrame {
             String[] columnNames = {"ID", "Nom"};
             //ConsultaPrestatges(columnNames, data, tipoConsulta);
             System.out.println("imprimir prestatges");
-            ConsultaGenerica<Prestatges> consultaBaldes = new ConsultaGenerica<>(MenuPrincipal.this, bibliotecaService, bibliotecaService.obtenirTotsElsPrestatges(), columnNames, 1);
+            ConsultaGenerica<Prestatges> consultaBaldes = new ConsultaGenerica<>(MenuPrincipal.this, bibliotecaService, bibliotecaService.getPrestatgesDAO().obtenerTodos(), columnNames, 1);
 
             //</editor-fold>
         } else if (this.tipoConsulta >= 13 && this.tipoConsulta <= 15) {
             //<editor-fold defaultstate="collapsed" desc="Consulta Baldes">
-            ArrayList<Baldes> baldes = (ArrayList<Baldes>) bibliotecaService.obtenirTotsElsBaldes(); // Obtener ArrayList de Baldes
+            ArrayList<Baldes> baldes = (ArrayList<Baldes>) bibliotecaService.getBaldesDAO().obtenerTodos(); // Obtener ArrayList de Baldes
 
             Object[][] data = new Object[baldes.size()][3];
 
@@ -550,13 +496,15 @@ public class MenuPrincipal extends JFrame {
             String[] columnNames = {"ID", "Nom", "ID Prestatge"};
             //ConsultaBaldes(columnNames, data, tipoConsulta);
             System.out.println("imprimir baldes");
-            ConsultaGenerica<Baldes> consultaBaldes = new ConsultaGenerica<>(MenuPrincipal.this, bibliotecaService, bibliotecaService.obtenirTotsElsBaldes(), columnNames, 6);
+            ConsultaGenerica<Baldes> consultaBaldes = new ConsultaGenerica<>(MenuPrincipal.this, bibliotecaService, bibliotecaService.getBaldesDAO().obtenerTodos(), columnNames, 6);
 
             //</editor-fold>
         }
     }
+    
+    
 
-    /*private void ConsultaLlibres(String[] columnNames, Object[][] data, String tipoConsulta) {
+    private void ConsultaLlibres(String[] columnNames, Object[][] data, String tipoConsulta) {
         JDialog dialog = new JDialog(MenuPrincipal.this, tipoConsulta, true);
         dialog.setSize(700, 400);
 
@@ -994,6 +942,9 @@ public class MenuPrincipal extends JFrame {
         dialog.setVisible(true);
     }
      */
+    //</editor-fold>
+    
+    
     private void MostrarMenuSegunPermisos() {
         // Implementa la lógica para mostrar el menú principal aquí
         // Puedes crear y mostrar otros JDialog, JFrame o componentes según sea necesario
@@ -1005,6 +956,7 @@ public class MenuPrincipal extends JFrame {
         menuBar.add(usuarisMenu);
         menuBar.add(llibresMenu);
         menuBar.add(prestatgesMenu);
+        menuBar.add(prestecMenu);
         menuBar.add(BaldesMenu);
         menuBar.add(TipusFonsMenu);
         menuBar.add(menuAjuda);
