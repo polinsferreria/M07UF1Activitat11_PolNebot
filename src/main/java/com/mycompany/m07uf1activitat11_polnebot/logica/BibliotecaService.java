@@ -24,7 +24,8 @@ public class BibliotecaService {
     private TipusFonsDAO tipusFonsDAO;
     private TipusUsuariDAO tipusUsuariDAO;
     private UsuarisDAO usuarisDAO;
-    
+    private PrestecDAO prestecDAO;
+            
     public static EntityManagerFactory emf;
     public static EntityManager em;
 
@@ -41,9 +42,13 @@ public class BibliotecaService {
         tipusFonsDAO = new TipusFonsDAO();
         tipusUsuariDAO = new TipusUsuariDAO();
         usuarisDAO = new UsuarisDAO();
+        prestecDAO = new PrestecDAO();
         
         
-        
+    }
+
+    public PrestecDAO getPrestecDAO() {
+        return prestecDAO;
     }
 
     public PrestatgesDAO getPrestatgesDAO() {

@@ -368,9 +368,9 @@ public class MenuPrincipal extends JFrame {
         altesPréstecMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Lógica para Alta de Prestatges
                 //FormulariPrestatges fp = new FormulariPrestatges(MenuPrincipal.this, bibliotecaService);
-            }
+            }                // Lógica para Alta de Prestatges
+
         });
 
         JMenuItem consultaPréstecMenuItem = new JMenuItem("Consulta");
