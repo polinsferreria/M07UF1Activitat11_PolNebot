@@ -29,7 +29,13 @@ public class Personal {
 
     @Column(name = "numeroCarnet")
     private String numeroCarnet;
+    
+    @Column(name = "sancionat", nullable = false)
+    private int sancionat = 0;
 
+    public Personal() {
+    }
+    
     public int getIdPersonal() {
         return idPersonal;
     }

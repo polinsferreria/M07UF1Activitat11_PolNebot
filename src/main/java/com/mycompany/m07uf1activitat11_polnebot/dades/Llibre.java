@@ -43,7 +43,20 @@ public class Llibre {
 
     @Column(name = "idBalda")
     private int idBalda;
+    
+    private int prestamos;//0 no esta en prestamo || 1 pretamo pero no devuelto || 2 prestamo y devuelto 
 
+    public int getPrestamos() {
+        return prestamos;
+    }
+
+    public void setPrestamos(int prestamos) {
+        this.prestamos = prestamos;
+    }
+
+    public Llibre() {
+    }
+    
     public Llibre(int idCodi, int idTipusfons, String titol, String autor, String isbn, int quantitatDisponible, int idPrestatge, int idBalda) {
         this.idCodi = idCodi;
         this.idTipusfons = idTipusfons;

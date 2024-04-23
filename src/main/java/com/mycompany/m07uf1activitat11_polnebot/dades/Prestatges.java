@@ -20,6 +20,9 @@ public class Prestatges {
     @Column(name = "nom")
     private String nom;
 
+    public Prestatges() {
+    }
+    
     public Prestatges(String nom) {
         this.nom = nom;
     }

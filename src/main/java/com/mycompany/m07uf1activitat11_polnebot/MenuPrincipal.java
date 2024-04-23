@@ -181,7 +181,6 @@ public class MenuPrincipal extends JFrame {
 
         //<editor-fold defaultstate="collapsed" desc="Menú Llibres">
         // Menú Llibres
-        
         llibresMenu = new JMenu("Llibres");
         JMenuItem altaLlibreMenuItem = new JMenuItem("Alta");
         altaLlibreMenuItem.addActionListener(new ActionListener() {
@@ -254,7 +253,7 @@ public class MenuPrincipal extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 // Lógica para conultar Baldes
                 tipoConsulta = 3;
-                String[] columnNames = {"ID", "nom","idPrestatge"};
+                String[] columnNames = {"ID", "nom", "idPrestatge"};
                 ConsultaGenerica<Baldes> consulta = new ConsultaGenerica<>(MenuPrincipal.this, bibliotecaService, bibliotecaService.getBaldesDAO().obtenerTodos(), columnNames, tipoConsulta);
             }
         });
@@ -284,7 +283,7 @@ public class MenuPrincipal extends JFrame {
                 tipoConsulta = 4;
                 String[] columnNames = {"ID", "Tipus"};
                 ConsultaGenerica<TipusFons> consulta = new ConsultaGenerica<>(MenuPrincipal.this, bibliotecaService, bibliotecaService.getTipusFonsDAO().obtenerTodos(), columnNames, tipoConsulta);;
-                
+
             }
         });
 
@@ -325,7 +324,7 @@ public class MenuPrincipal extends JFrame {
                 cargarConsulta("Modificar un usuari");
             }
         });;*/
-
+        
         JMenuItem consultaUsuariMenuItem = new JMenuItem("Consulta");
         consultaUsuariMenuItem.addActionListener(new ActionListener() {
             @Override
@@ -334,7 +333,7 @@ public class MenuPrincipal extends JFrame {
                 tipoConsulta = 5;
                 String[] columnNames = {"ID", "Nom", "Password", "Tipus Usuari"};
                 ConsultaGenerica<Usuaris> consulta = new ConsultaGenerica<>(MenuPrincipal.this, bibliotecaService, bibliotecaService.getUsuarisDAO().obtenerTodos(), columnNames, tipoConsulta);;
-               
+                
             }
         });
 
@@ -359,7 +358,7 @@ public class MenuPrincipal extends JFrame {
 
         menuAjuda.add(tutorialItem);
         //</editor-fold>
-        
+
         //<editor-fold defaultstate="collapsed" desc="Menú Prestec">
         // Menú Manteniment fons
         prestecMenu = new JMenu("Prestec");
@@ -368,8 +367,9 @@ public class MenuPrincipal extends JFrame {
         altesPréstecMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //FormulariPrestatges fp = new FormulariPrestatges(MenuPrincipal.this, bibliotecaService);
-            }                // Lógica para Alta de Prestatges
+                ConsultaPrestec fp = new ConsultaPrestec(MenuPrincipal.this, bibliotecaService);
+                
+            }
 
         });
 
@@ -377,6 +377,7 @@ public class MenuPrincipal extends JFrame {
         consultaPréstecMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                ConsultaPrestec fp = new ConsultaPrestec(MenuPrincipal.this, bibliotecaService);
                 // Lógica para conultar Prestatges
                 //tipoConsulta = 2;
                 //String[] columnNames = {"ID", "Nom"};
@@ -392,15 +393,14 @@ public class MenuPrincipal extends JFrame {
         menuBar.add(usuarisMenu);
         //menuBar.add(Préstec);
         menuBar.add(menuAjuda);
-        
+
         // Establecer la barra de menú en el JFrame
         setJMenuBar(menuBar);
 
         menuBar.setVisible(true);
     }
-    
-    
-   /* 
+
+    /* 
   //<editor-fold defaultstate="collapsed" desc="Consultas no generic">
     
     private void cargarConsulta(String tipoConsulta) {
@@ -943,8 +943,6 @@ public class MenuPrincipal extends JFrame {
     }
      */
     //</editor-fold>
-    
-    
     private void MostrarMenuSegunPermisos() {
         // Implementa la lógica para mostrar el menú principal aquí
         // Puedes crear y mostrar otros JDialog, JFrame o componentes según sea necesario

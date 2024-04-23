@@ -16,8 +16,8 @@ public class Usuaris {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idUsuari;
-
-    @Column(name = "nomUsuari")
+    
+    @Column(name = "nomUsuari", unique = true)
     private String nomUsuari;
 
     @Column(name = "password")

@@ -20,6 +20,10 @@ public class TipusFons {
     @Column(name = "tipus")
     private String tipus;
 
+    public TipusFons() {
+    }
+
+    
     public TipusFons(String tipus) {
         this.tipus = tipus;
     }
