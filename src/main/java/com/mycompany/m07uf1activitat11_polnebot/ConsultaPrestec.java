@@ -201,7 +201,7 @@ public class ConsultaPrestec extends JDialog {
     private ArrayList<Llibre> cargarConsultaPerstat(ArrayList<Llibre> llibres) {
         ArrayList<Llibre> librosFiltrados = new ArrayList<>();
         for (Llibre libro : llibres) {
-            if (bibliotecaService.getPrestecDAO().estaLibroEnPrestamo(libro)) {
+            if (bibliotecaService.getPrestecDAO().estaLibroEnPrestamo(libro) >= 1) {
                 librosFiltrados.add(libro);
             }
         }

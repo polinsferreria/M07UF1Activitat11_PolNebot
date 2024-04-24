@@ -24,6 +24,9 @@ public class PrestecDAO extends GenericDAO<Prestec> {
         List<Prestec> prestamos = obtenerTodos();
         for (Prestec prestamo : prestamos) {
             if (prestamo.getIdLlibre() == libro.getIdLlibre()) {
+                //esta en prestamo
+                respuesta = 1;
+                
                 if (prestamo.getDataDevolucio().before(new Date())) {
                     // El libro está en préstamo si el id del libro coincide y la fecha de devolución es nula
                     //esta en prestamo y hay tiempo para devolver 
@@ -32,8 +35,7 @@ public class PrestecDAO extends GenericDAO<Prestec> {
                     //esta en prestamo y NO hay tiempo para devolver 
                     respuesta = 3;
                 }
-                //esta en prestamo pero no se ha devuelto 
-                respuesta = 1;
+                
             }
         }
         //el libro no esta en prestamo

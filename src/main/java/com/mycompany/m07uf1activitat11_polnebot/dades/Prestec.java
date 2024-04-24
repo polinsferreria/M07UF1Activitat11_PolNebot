@@ -30,7 +30,10 @@ public class Prestec {
 
     @Column(name = "dataDevolucio")
     private Date dataDevolucio;
-
+    
+    @Column(name = "dataEntrega")
+    private Date dataEntrega;
+    
     public Prestec() {
         // Default constructor
     }
@@ -81,4 +84,13 @@ public class Prestec {
     public void setDataDevolucio(Date dataDevolucio) {
         this.dataDevolucio = dataDevolucio;
     }
+
+    public Date getDataEntrega() {
+        return dataEntrega;
+    }
+
+    public void setDataEntrega(Date dataEntrega) {
+        this.dataEntrega = dataEntrega;
+    }
+    
 }
