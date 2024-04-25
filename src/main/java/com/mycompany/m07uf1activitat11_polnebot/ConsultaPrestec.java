@@ -184,8 +184,15 @@ public class ConsultaPrestec extends JDialog {
         return data;
 
     }
-    private ArrayList<Llibre> cargarConsultaIncidencies(ArrayList<Llibre> llibres) {
-     
+    
+    private ArrayList<Llibre> cargarConsultaIncidencies(ArrayList<Llibre> llibres) {//se paso el plazo de entrega
+        ArrayList<Llibre> librosFiltrados = new ArrayList<>();
+        for (Llibre libro : llibres) {
+            if (bibliotecaService.getPrestecDAO().estaLibroEnPrestamo(libro) == 4) {
+                librosFiltrados.add(libro);
+            }
+        }
+        return librosFiltrados;
     }
     
     private ArrayList<Llibre> cargarConsultaNoPerstat(ArrayList<Llibre> llibres) {

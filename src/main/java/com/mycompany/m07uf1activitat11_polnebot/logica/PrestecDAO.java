@@ -34,11 +34,18 @@ public class PrestecDAO extends GenericDAO<Prestec> {
                 } else {
                     //esta en prestamo y NO hay tiempo para devolver 
                     respuesta = 3;
+                    respuesta = comprobrarEntregado(prestamo,respuesta);
                 }
                 
             }
         }
         //el libro no esta en prestamo
         return respuesta;
+    }
+    private int comprobrarEntregado(Prestec p,int r){
+        if (p.getDataEntrega() == null) {//no tiene fecha de entrega INCIDECIA
+            r= 4;
+        }
+        return r;
     }
 }
